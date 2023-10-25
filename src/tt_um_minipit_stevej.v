@@ -25,6 +25,7 @@ module tt_um_minipit_stevej (
     // registers derived from uio_in;
     wire we;
     assign we = uio_in[0];
+
     reg [1:0] config_address;
 
     wire config_address_0;
@@ -57,6 +58,10 @@ module tt_um_minipit_stevej (
             counter_set <= 0;
             divider_on <= 0;
             divider_count <= 0;
+            interrupting <= 0;
+            repeating <= 0;
+            config_address <= 2'b0;
+            temp_counter <= 16'b0;
         end else begin
             // TODO: set config_address_1, config_address_0, and we
             // set config bits from ui_in;
