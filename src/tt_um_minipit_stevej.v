@@ -24,15 +24,15 @@ module tt_um_minipit_stevej (
     reg interrupting;
     // registers derived from uio_in;
     wire we;
-    assign we = uio_in[0];
+    assign we = uio_in[7];
 
     reg [1:0] config_address;
 
     wire config_address_0;
-    assign config_address_0 = uio_in[1];
+    assign config_address_0 = uio_in[6];
 
     wire config_address_1;
-    assign config_address_1 = uio_in[2];
+    assign config_address_1 = uio_in[5];
 
     // wherein we need temporary storage
     reg [15:0] temp_counter;
@@ -43,7 +43,7 @@ module tt_um_minipit_stevej (
     reg [15:0] counter;
     reg [15:0] current_count;
 
-    // If the divider is enabled, 
+    // A counter to use when the divider is enabled
     reg [8:0] divider_count;
 
     // uo_out is always a status byte
@@ -65,7 +65,7 @@ module tt_um_minipit_stevej (
         end else begin
             // TODO: set config_address_1, config_address_0, and we
             // set config bits from ui_in;
-            if (we) begin
+            if (we) begin // TODO: this never is pulled high for some reason
                 config_address <= {config_address_1, config_address_0};
                 case (config_address)
                     2'b00: begin // write config registers
@@ -77,8 +77,9 @@ module tt_um_minipit_stevej (
                         counter <= counter & temp_counter;
                     end
                     2'b10: begin // counter low byte
-                        temp_counter <= {8'b0, ui_in}; 
-                        counter <= counter & temp_counter;
+                        temp_counter <= {8'b0, ui_in};
+                        counter <= counter & temp_counter; 
+                        current_count <= 0;
                         counter_set <= 1;
                     end
                     2'b11: begin // unused
