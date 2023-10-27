@@ -67,8 +67,7 @@ module tt_um_minipit_stevej (
                         temp_counter <= ui_in;
                     end
                     2'b10: begin // counter low byte
-                        // TODO: why isn't this set?!
-                        counter <= {temp_counter, ui_in}; // 8'b1111_0000; // {temp_counter, ui_in};
+                        counter <= {temp_counter, ui_in};
                         current_count <= 0;
                         counter_set <= 1;
                     end
