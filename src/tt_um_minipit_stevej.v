@@ -56,8 +56,8 @@ module tt_um_minipit_stevej (
         end else begin
             // set config bits from ui_in;
             if (we && !counter_set) begin
-                // FIXME: if we construct the two bits below, we get latching which causes timing errors.
-                // config_address = {uio_in[5], uio_in[6]};
+                // FIXME: if we construct the register below, we get latching which causes timing errors.
+                // config_address <= {uio_in[5], uio_in[6]};
                 case ({uio_in[5], uio_in[6]})
                     2'b00: begin // write config registers
                         divider_on <= ui_in[7];
