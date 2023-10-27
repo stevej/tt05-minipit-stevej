@@ -22,20 +22,12 @@ module tt_um_minipit_stevej (
     reg repeating;
     reg counter_set;
     reg interrupting;
-    // registers derived from uio_in;
+
     wire we;
     assign we = uio_in[7];
 
-    reg [1:0] config_address;
-
-    wire config_address_0;
-    assign config_address_0 = uio_in[6];
-
-    wire config_address_1;
-    assign config_address_1 = uio_in[5];
-
     // wherein we need temporary storage
-    reg [15:0] temp_counter;
+    reg [7:0] temp_counter;
 
     assign uio_oe = 8'b1111_0000;
 
@@ -60,25 +52,23 @@ module tt_um_minipit_stevej (
             divider_count <= 0;
             interrupting <= 0;
             repeating <= 0;
-            config_address <= 2'b0;
-            temp_counter <= 16'b0;
+            temp_counter <= 8'b0;
         end else begin
-            // TODO: set config_address_1, config_address_0, and we
             // set config bits from ui_in;
-            if (we) begin // TODO: this never is pulled high for some reason
-                config_address <= {config_address_1, config_address_0};
-                case (config_address)
+            if (we && !counter_set) begin
+                // FIXME: if we construct the two bits below, we get latching which causes timing errors.
+                // config_address = {uio_in[5], uio_in[6]};
+                case ({uio_in[5], uio_in[6]})
                     2'b00: begin // write config registers
                         divider_on <= ui_in[7];
                         repeating <= ui_in[6];
                     end
                     2'b01: begin // counter high byte
-                        temp_counter <= {ui_in, 8'b0};
-                        counter <= counter & temp_counter;
+                        temp_counter <= ui_in;
                     end
                     2'b10: begin // counter low byte
-                        temp_counter <= {8'b0, ui_in};
-                        counter <= counter & temp_counter; 
+                        // TODO: why isn't this set?!
+                        counter <= {temp_counter, ui_in}; // 8'b1111_0000; // {temp_counter, ui_in};
                         current_count <= 0;
                         counter_set <= 1;
                     end
@@ -90,9 +80,10 @@ module tt_um_minipit_stevej (
             if (counter_set && divider_on) begin
                 divider_count <= divider_count + 1;
                 if (divider_count == 10) begin
+                    divider_count <= 0; // reset
                     current_count <= current_count + 1;
                 end
-            end else begin
+            end else if (counter_set) begin
                 `ifdef FORMAL
                     assert(!divider_on);
                 `endif
