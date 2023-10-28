@@ -92,6 +92,9 @@ module tt_um_minipit_stevej (
             if (counter_set && (current_count == counter)) begin
                 // pull interrupt line high for one clock cycle
                 interrupting <= 1;
+                if (repeating) begin
+                    current_count <= 0;
+                end
             end else begin
                 interrupting <= 0;
             end
