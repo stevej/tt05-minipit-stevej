@@ -3,7 +3,7 @@ from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge, FallingEdge, Timer, ClockCycles
 
 
-# @cocotb.test()
+@cocotb.test()
 async def test_no_config(dut):
     dut._log.info("start")
     clock = Clock(dut.clk, 10, units="us")
@@ -28,7 +28,7 @@ async def test_no_config(dut):
     assert dut.uo_out.value == 0x00
 
 
-# @cocotb.test()
+@cocotb.test()
 async def test_one_shot(dut):
     dut._log.info("start")
     clock = Clock(dut.clk, 10, units="us")
@@ -92,9 +92,8 @@ async def repeating_no_divider(dut):
     assert dut.uo_out.value == 0b01001000
     assert dut.uio_out.value == 0b0000_0001
 
-# @cocotb.test()
 
-
+@cocotb.test()
 async def oneshot_divided(dut):
     dut._log.info("start")
     clock = Clock(dut.clk, 10, units="us")
