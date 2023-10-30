@@ -84,15 +84,17 @@ async def repeating_no_divider(dut):
     await ClockCycles(dut.clk, 13)
     dut._log.info("checking that interrupt is high")
     assert dut.uo_out.value == 0b01001000
+    assert dut.uio_out.value == 0b0000_0001
 
     dut.uio_in.value = 0x0  # unset we so we no longer configure registers.
     await ClockCycles(dut.clk, 11)
     dut._log.info("checking that interrupt is high")
     assert dut.uo_out.value == 0b01001000
-    await ClockCycles(dut.clk, 10)
-
+    assert dut.uio_out.value == 0b0000_0001
 
 # @cocotb.test()
+
+
 async def oneshot_divided(dut):
     dut._log.info("start")
     clock = Clock(dut.clk, 10, units="us")
