@@ -36,7 +36,7 @@ module tt_um_minipit_stevej (
     reg [15:0] current_count;
 
     // A counter to use when the divider is enabled
-    reg [8:0] divider_count;
+    reg [7:0] divider_count;
 
     // uo_out is always a status byte
     assign uo_out = {divider_on, counter_set, 1'b0, 1'b0, interrupting, 1'b0, 1'b0, 1'b0};
@@ -88,12 +88,16 @@ module tt_um_minipit_stevej (
                 `endif
                 current_count <= current_count + 1;
             end
-
+            // todo: unset the interrupt
             if (counter_set && (current_count == counter)) begin
                 // pull interrupt line high for one clock cycle
                 interrupting <= 1;
                 if (repeating) begin
                     current_count <= 0;
+                end
+                // on a rollover of divider_count, reset the interrupt
+                if (divider_on && (divider_count > 0)) begin
+                    interrupting <= 0; // this is hokey.
                 end
             end else begin
                 interrupting <= 0;
