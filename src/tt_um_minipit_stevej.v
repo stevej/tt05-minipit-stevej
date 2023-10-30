@@ -28,9 +28,10 @@ module tt_um_minipit_stevej (
 
     // wherein we need temporary storage
     reg [7:0] temp_counter;
-    // the first four bits are writable by the design
-    // the last four bits are writable by the user
-    assign uio_oe = 8'b0000_1111;
+
+    // the first four bits are writable by the user
+    // the last four bits are writable by the design
+    assign uio_oe = 8'b1111_0000;
 
     // counter derived from config byte 1 concatenated with config byte 0
     reg [15:0] counter;
