@@ -9,6 +9,11 @@ async def test_no_config(dut):
     clock = Clock(dut.clk, 10, units="us")
     cocotb.start_soon(clock.start())
 
+    dut.ena.value = 1
+    dut.uio_out.value = 0x0
+    dut.uio_in.value = 0x0
+    dut.uo_out.value = 0x0
+
     # reset
     dut._log.info("reset")
     dut.rst_n.value = 0
