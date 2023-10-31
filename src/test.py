@@ -29,7 +29,7 @@ async def test_no_config(dut):
 
 
 @cocotb.test()
-async def test_one_shot(dut):
+async def test_one_shot_no_divider(dut):
     dut._log.info("start")
     clock = Clock(dut.clk, 10, units="us")
     cocotb.start_soon(clock.start())
@@ -80,16 +80,16 @@ async def repeating_no_divider(dut):
     await ClockCycles(dut.clk, 2)
 
     dut.uio_in.value = 0xA0  # set we high and config_address to 0b10
-    dut.ui_in.value = 0x0A
+    dut.ui_in.value = 0x0A  # counter set to 10
     await ClockCycles(dut.clk, 13)
     dut._log.info("checking that interrupt is high")
-    assert dut.uo_out.value == 0b01001000
+    assert dut.uo_out.value == 0b0100_1000
     assert dut.uio_out.value == 0b0000_0001
 
     dut.uio_in.value = 0x0  # unset we so we no longer configure registers.
     await ClockCycles(dut.clk, 11)
     dut._log.info("checking that interrupt is high")
-    assert dut.uo_out.value == 0b01001000
+    assert dut.uo_out.value == 0b0100_1000
     assert dut.uio_out.value == 0b0000_0001
 
 

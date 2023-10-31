@@ -73,8 +73,7 @@ module tt_um_minipit_stevej (
                         current_count <= 0;
                         counter_set <= 1;
                     end
-                    2'b11: begin // unused
-                    end
+                    default: begin end
                 endcase
             end // end config logic
 
@@ -85,12 +84,11 @@ module tt_um_minipit_stevej (
                     current_count <= current_count + 1;
                 end
             end else if (counter_set) begin
-                `ifdef FORMAL
-                    assert(!divider_on);
-                `endif
                 current_count <= current_count + 1;
+            end else begin
+                current_count <= current_count;
             end
-            // todo: unset the interrupt
+
             if (counter_set && (current_count == counter)) begin
                 // pull interrupt line high for one clock cycle
                 interrupting <= 1;
@@ -99,7 +97,7 @@ module tt_um_minipit_stevej (
                 end
                 // on a rollover of divider_count, reset the interrupt
                 if (divider_on && (divider_count > 0)) begin
-                    interrupting <= 0; // this is hokey.
+                    interrupting <= 0;
                 end
             end else begin
                 interrupting <= 0;
