@@ -6,9 +6,11 @@ TinyTapeout is an educational project that aims to make it easier and cheaper th
 
 This design is a programmable interrupt timer allows you to specify when a digital line is pulled high after a given number of clock ticks, the timer can either repeat or be one-shot.
 
+This started as a reimplementation of the Intel 8253 programmable interrupt timer and I eventually stripped it down to the bare minimal configuration and wires required to be functional within the wire and gate constraints of a TinyTapeout project.
+
 ## Quickstart
 
-The following is pseudocode for can configuring an interrupt pin to go high for one cycle after 10 cycles (plus 2 for setup).
+The following is pseudocode for configuring an interrupt pin to go high for one cycle after 10 cycles (plus 2 for setup).
 
 ```
 uio_in = 0xA0
@@ -36,7 +38,7 @@ As previously stated, `{uio_in[5], uio_in[6]}` are the two bits used to select h
 
 ### Timer options
 
-When you select the `00` register, there are two options:
+When you select the `00` register, there are only two options available:
 
 #### Clock divider
 
@@ -44,7 +46,7 @@ When you select the `00` register, there are two options:
 
 This bit selects whether a 10x clock divider is used.
 
-## Repeating
+#### Repeating
 
 `repeating <= ui_in[6];`
 
