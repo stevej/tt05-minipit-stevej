@@ -6,7 +6,7 @@ TinyTapeout is an educational project that aims to make it easier and cheaper th
 
 This design is a programmable interrupt timer allows you to specify when a digital line is pulled high after a given number of clock ticks, the timer can either repeat or be one-shot.
 
-This started as a reimplementation of the Intel 8253 programmable interrupt timer and I eventually stripped it down to the bare minimal configuration and wires required to be functional within the wire and gate constraints of a TinyTapeout project.
+This started as a reimplementation of the Intel 8253 programmable interval timer which I stripped down to the bare minimal configuration and wires required to be functional within the wire and gate constraints of a TinyTapeout project.
 
 ## Quickstart
 
