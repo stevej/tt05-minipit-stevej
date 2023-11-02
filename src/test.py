@@ -71,7 +71,6 @@ async def repeating_no_divider(dut):
     dut.uio_in.value = 0b1000_0000
     # divider off, repeat on.
     dut.ui_in.value = 0b0100_0000
-    # TODO: set repeating on in the payload
     await ClockCycles(dut.clk, 1)
     dut.uio_in.value = 0x01
     dut.ui_in.value = 0x00
@@ -140,7 +139,6 @@ async def repeating_with_divider(dut):
     dut.uio_in.value = 0b1000_0000
     # divider on, repeat on.
     dut.ui_in.value = 0b1100_0000
-    # TODO: set repeating on in the payload
     await ClockCycles(dut.clk, 1)
     dut.uio_in.value = 0x01
     dut.ui_in.value = 0x00
